@@ -1,25 +1,36 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, NavLink, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import Wedding from './pages/Wedding'
-import PreWedding from './pages/PreWedding'
-import Kids from './pages/Kids'
-import About from './pages/About'
-import Contact from './pages/Contact'
 import Portfolio from './pages/Portfolio'
+import Contact from './pages/Contact'
 import './App.css'
+
+function Layout() {
+  return (
+    <div className="site-shell">
+      <header className="top-nav">
+        <p className="brand">Pali Photographer</p>
+        <nav>
+          <NavLink to="/" end>Home</NavLink>
+          <NavLink to="/portfolio">Portfolio</NavLink>
+          <NavLink to="/contact">Contact Us</NavLink>
+        </nav>
+      </header>
+
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
+    </div>
+  )
+}
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/wedding" element={<Wedding />} />
-        <Route path="/prewedding" element={<PreWedding />} />
-        <Route path="/kids" element={<Kids />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
+      <Layout />
     </Router>
   )
 }
