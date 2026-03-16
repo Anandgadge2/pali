@@ -1,193 +1,88 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import '../App.css'
-import { logos } from '../utils/imageData'
+import { useEffect, useMemo, useState } from 'react'
+import w1 from '../assets/A/1.JPG'
+import w2 from '../assets/A/10.JPG'
+import w3 from '../assets/A/21.JPG'
+import w4 from '../assets/A/41.JPG'
+import p1 from '../assets/B/K3.JPG'
+import p2 from '../assets/B/K10.JPG'
+import p3 from '../assets/B/K29.JPG'
+import p4 from '../assets/B/K39.JPG'
+import k1 from '../assets/B/K22.jpg'
+import k2 from '../assets/B/K45.jpg'
+import k3 from '../assets/B/K46.jpg'
+import k4 from '../assets/B/K40.jpg'
 
-const CATEGORIES = [
-  { key: 'wedding', label: 'Wedding' },
-  { key: 'prewedding', label: 'Pre-Wedding' },
-  { key: 'kids', label: 'Kids' },
-]
+const categories = {
+  wedding: { label: 'Weddings', images: [w1, w2, w3, w4] },
+  prewedding: { label: 'Pre-Wedding', images: [p1, p2, p3, p4] },
+  kids: { label: 'Kids', images: [k1, k2, k3, k4] },
+}
 
 function Portfolio() {
-  const [scrolled, setScrolled] = useState(false)
-  const cursorRef = useRef(null)
-  const cursorRingRef = useRef(null)
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [images, setImages] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [activeCategory, setActiveCategory] = useState('wedding')
+  const [selected, setSelected] = useState(null)
 
-  const category = searchParams.get('category') || 'wedding'
-
-  const apiBase = useMemo(() => {
-    // Backend runs on 5174 by default
-    return 'http://localhost:5174'
-  }, [])
-
-  // Custom cursor
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = e.clientX + 'px'
-        cursorRef.current.style.top = e.clientY + 'px'
-      }
-      if (cursorRingRef.current) {
-        cursorRingRef.current.style.left = e.clientX + 'px'
-        cursorRingRef.current.style.top = e.clientY + 'px'
-      }
-    }
-
-    const handleMouseDown = () => {
-      if (cursorRingRef.current) cursorRingRef.current.classList.add('expand')
-    }
-
-    const handleMouseUp = () => {
-      if (cursorRingRef.current) cursorRingRef.current.classList.remove('expand')
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mousedown', handleMouseDown)
-    window.addEventListener('mouseup', handleMouseUp)
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mousedown', handleMouseDown)
-      window.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [])
-
-  // Navbar scroll effect
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    document.title = 'Portfolio | Pali Studio'
   }, [])
 
   useEffect(() => {
-    let cancelled = false
-
-    const load = async () => {
-      setLoading(true)
-      setError('')
-      try {
-        const res = await fetch(`${apiBase}/api/images?category=${encodeURIComponent(category)}`)
-        if (!res.ok) throw new Error('Failed to load images')
-        const data = await res.json()
-        if (cancelled) return
-        setImages(Array.isArray(data.urls) ? data.urls : [])
-      } catch (_e) {
-        if (cancelled) return
-        setImages([])
-        setError('Images not available yet. Upload them from the backend first.')
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
+    const onEsc = (event) => {
+      if (event.key === 'Escape') setSelected(null)
     }
+    window.addEventListener('keydown', onEsc)
+    return () => window.removeEventListener('keydown', onEsc)
+  }, [])
 
-    load()
-    return () => {
-      cancelled = true
-    }
-  }, [apiBase, category])
-
-  const onPickCategory = (key) => {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      next.set('category', key)
-      return next
-    })
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  const activeImages = useMemo(() => categories[activeCategory].images, [activeCategory])
 
   return (
-    <>
-      <div className="cursor" ref={cursorRef}></div>
-      <div className="cursor-ring" ref={cursorRingRef}></div>
-
-      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-        <Link to="/" className="nav-logo">
-          <img src={logos.logo} alt="Pali Logo" style={{ height: '40px', marginRight: '8px' }} />
-        </Link>
-        <div className="nav-links">
-          <Link to="/portfolio" className="nav-link">Portfolio</Link>
-          <Link to="/wedding" className="nav-link">Wedding</Link>
-          <Link to="/prewedding" className="nav-link">Pre-Wedding</Link>
-          <Link to="/kids" className="nav-link">Kids</Link>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/contact" className="nav-btn">Contact</Link>
-        </div>
-      </nav>
-
-      <section className="portfolio-hero">
-        <div className="portfolio-hero-bg"></div>
-        <div className="portfolio-hero-content">
-          <div className="portfolio-hero-kicker">Portfolio</div>
-          <h1 className="portfolio-hero-title">Every Love Story Deserves a <em>Beautiful Frame</em></h1>
-          <p className="portfolio-hero-subtitle">Browse our work by category. Click a category to view the full gallery.</p>
-        </div>
+    <main className="page">
+      <section className="page-intro">
+        <p className="script-line">Capturing your forever in every frame</p>
+        <h1>Category-wise curated portfolio built for speed and premium quality.</h1>
+        <p>Tap any image to open full-size viewing with an immersive lightbox.</p>
       </section>
 
-      <section className="portfolio-page section">
-        <div className="portfolio-page-inner">
-          <div className="portfolio-cats">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.key}
-                type="button"
-                className={`portfolio-cat ${category === c.key ? 'active' : ''}`}
-                onClick={() => onPickCategory(c.key)}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(245,240,232,0.75)' }}>
-              Loading {CATEGORIES.find((x) => x.key === category)?.label}...
-            </div>
-          ) : error ? (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(245,240,232,0.75)' }}>
-              {error}
-            </div>
-          ) : (
-            <div className="portfolio-grid">
-              {images.map((src, idx) => (
-                <a
-                  key={src + idx}
-                  href={src}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="portfolio-tile"
-                >
-                  <img className="portfolio-img" src={src} alt="" loading="lazy" />
-                  <div className="portfolio-tile-overlay">
-                    <div className="portfolio-tile-title">
-                      {CATEGORIES.find((x) => x.key === category)?.label} {idx + 1}
-                    </div>
-                    <div className="portfolio-tile-sub">Click to open</div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
+      <section className="category-tabs" aria-label="Portfolio categories">
+        {Object.entries(categories).map(([key, value]) => (
+          <button
+            key={key}
+            type="button"
+            className={`tab-btn ${activeCategory === key ? 'is-active' : ''}`}
+            onClick={() => setActiveCategory(key)}
+          >
+            {value.label}
+          </button>
+        ))}
       </section>
 
-      <footer className="site-footer">
-        <div className="site-footer-inner">
-          <div className="footer-brand">
-            <img src={logos.signature} alt="Pali Signature" className="footer-signature" />
-          </div>
-          <div className="footer-links">
-            <Link to="/portfolio">Portfolio</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-          </div>
+      <section className="masonry">
+        {activeImages.map((image, index) => (
+          <button
+            type="button"
+            key={`${activeCategory}-${image}`}
+            className="masonry-card fade-in"
+            style={{ animationDelay: `${index * 80}ms` }}
+            onClick={() => setSelected({ image, index })}
+          >
+            <img
+              src={image}
+              alt={`${categories[activeCategory].label} shoot ${index + 1}`}
+              loading={index < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </button>
+        ))}
+      </section>
+
+      {selected && (
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label="Expanded portfolio image">
+          <button type="button" className="lightbox-close" onClick={() => setSelected(null)}>✕</button>
+          <img src={selected.image} alt="Expanded portfolio" className="lightbox-image" />
         </div>
-      </footer>
-    </>
+      )}
+    </main>
   )
 }
 
