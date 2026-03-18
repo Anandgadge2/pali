@@ -5,29 +5,44 @@ import p3 from '../assets/A/41.JPG'
 import p4 from '../assets/B/K10.JPG'
 import p5 from '../assets/B/K29.JPG'
 import p6 from '../assets/B/K39.JPG'
+import p7 from '../assets/A/24.JPG'
+import p8 from '../assets/B/K33.JPG'
 
-const gallery = [p1, p2, p3, p4, p5, p6]
+const gallery = [
+  { image: p1, title: 'Golden Hour Vows', tag: 'Wedding' },
+  { image: p2, title: 'Temple Ceremony', tag: 'Wedding' },
+  { image: p3, title: 'Classic Bridal Portrait', tag: 'Portrait' },
+  { image: p4, title: 'Romantic Walk', tag: 'Pre-Wedding' },
+  { image: p5, title: 'Couple Editorial', tag: 'Pre-Wedding' },
+  { image: p6, title: 'Family Warmth', tag: 'Portrait' },
+  { image: p7, title: 'Reception Lights', tag: 'Wedding' },
+  { image: p8, title: 'Candid Happiness', tag: 'Portrait' },
+]
 
 function Portfolio() {
   useEffect(() => {
-    document.title = 'Portfolio | Pali Studio Photography'
+    document.title = 'Portfolio | Pali Photography'
   }, [])
 
   return (
     <main className="page">
       <section className="page-intro">
         <p className="eyebrow">Portfolio</p>
-        <h1>Work crafted for premium brands and meaningful moments.</h1>
+        <h1>Curated galleries with a premium editorial tone.</h1>
         <p>
-          A curated mix of wedding, portrait, and storytelling projects with high-end retouching
-          and clean visual direction.
+          A blend of weddings, portraits, and pre-wedding stories crafted with elegant color,
+          natural expressions, and thoughtful composition.
         </p>
       </section>
 
       <section className="masonry">
-        {gallery.map((image, index) => (
-          <figure key={image} className="masonry-card fade-in" style={{ animationDelay: `${index * 120}ms` }}>
-            <img src={image} alt={`Portfolio sample ${index + 1}`} loading="lazy" decoding="async" />
+        {gallery.map((item, index) => (
+          <figure key={item.title} className="masonry-card fade-in" style={{ animationDelay: `${index * 90}ms` }}>
+            <img src={item.image} alt={item.title} loading="lazy" decoding="async" />
+            <figcaption>
+              <strong>{item.title}</strong>
+              <span>{item.tag}</span>
+            </figcaption>
           </figure>
         ))}
       </section>

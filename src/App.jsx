@@ -24,12 +24,15 @@ function App() {
     <Router>
       <div className="site-shell">
         <header className="topbar">
-          <NavLink to="/" className="brand">Pali<span>Studio</span></NavLink>
-          <nav className="main-nav" aria-label="Primary">
-            <NavLink to="/" end className="nav-link">Home</NavLink>
-            <NavLink to="/portfolio" className="nav-link">Portfolio</NavLink>
-            <NavLink to="/contact" className="nav-link">Contact Us</NavLink>
-          </nav>
+          <div className="topbar-inner">
+            <NavLink to="/" className="brand">Pali <span>Photography</span></NavLink>
+            <nav className="main-nav" aria-label="Primary">
+              <NavLink to="/" end className="nav-link">Home</NavLink>
+              <NavLink to="/portfolio" className="nav-link">Portfolio</NavLink>
+              <NavLink to="/contact" className="nav-link">Contact</NavLink>
+            </nav>
+            <NavLink to="/contact" className="button button-primary topbar-cta">Book Now</NavLink>
+          </div>
         </header>
 
         <Routes>
@@ -37,6 +40,14 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
+
+        <footer className="footer">
+          <div>
+            <p className="footer-brand">Pali Photography</p>
+            <p>Elegant wedding and portrait storytelling across India.</p>
+          </div>
+          <p>© {new Date().getFullYear()} Pali Photography. All rights reserved.</p>
+        </footer>
       </div>
     </Router>
   )
