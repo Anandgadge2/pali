@@ -3,6 +3,8 @@ import { BrowserRouter as Router, NavLink, Route, Routes } from 'react-router-do
 import Home from './pages/Home'
 import Portfolio from './pages/Portfolio'
 import Contact from './pages/Contact'
+import logoMark from './assets/B/logo.png'
+import signature from './assets/B/sign.png'
 import './App.css'
 
 function App() {
@@ -24,12 +26,18 @@ function App() {
     <Router>
       <div className="site-shell">
         <header className="topbar">
-          <NavLink to="/" className="brand">Pali<span>Studio</span></NavLink>
-          <nav className="main-nav" aria-label="Primary">
-            <NavLink to="/" end className="nav-link">Home</NavLink>
-            <NavLink to="/portfolio" className="nav-link">Portfolio</NavLink>
-            <NavLink to="/contact" className="nav-link">Contact Us</NavLink>
-          </nav>
+          <div className="topbar-inner">
+            <NavLink to="/" className="brand">
+              <img src={logoMark} alt="Pali Photography logo" className="brand-logo" loading="eager" decoding="async" />
+              <span>Pali</span> Photography
+            </NavLink>
+            <nav className="main-nav" aria-label="Primary">
+              <NavLink to="/" end className="nav-link">Home</NavLink>
+              <NavLink to="/portfolio" className="nav-link">Portfolio</NavLink>
+              <NavLink to="/contact" className="nav-link">Contact</NavLink>
+            </nav>
+            <NavLink to="/contact" className="button button-primary topbar-cta">Book Now</NavLink>
+          </div>
         </header>
 
         <Routes>
@@ -37,6 +45,17 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
+
+        <footer className="footer">
+          <div>
+            <p className="footer-brand">Pali Photography</p>
+            <p>Fine-art wedding and portrait storytelling from Scotland to destination events.</p>
+          </div>
+          <div className="footer-sign-wrap">
+            <img src={signature} alt="Pali signature" className="footer-sign" loading="lazy" decoding="async" />
+            <p>© {new Date().getFullYear()} Pali Photography. All rights reserved.</p>
+          </div>
+        </footer>
       </div>
     </Router>
   )
