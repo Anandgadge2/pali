@@ -2,54 +2,65 @@ import { useEffect } from 'react'
 
 function Contact() {
   useEffect(() => {
-    document.title = 'Contact | Pali Studio'
+    document.title = 'Contact | Pali Photography'
   }, [])
 
   return (
     <main className="page">
       <section className="page-intro">
-        <p className="eyebrow">Contact us</p>
-        <h1>Let&apos;s build your next signature shoot.</h1>
+        <p className="eyebrow">Contact</p>
+        <h1>Let&apos;s design your perfect photography experience.</h1>
         <p>
-          Share your event date, location, and creative goals. We respond quickly with package
-          options and timeline recommendations.
+          Tell us about your event, preferred style, and location. We&apos;ll get back with package
+          recommendations and a personalized timeline.
         </p>
       </section>
 
       <section className="contact-grid">
         <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
           <label>
-            Name
-            <input type="text" required placeholder="Your name" />
+            Full Name
+            <input type="text" required placeholder="Your full name" />
           </label>
           <label>
-            Email
+            Email Address
             <input type="email" required placeholder="name@email.com" />
           </label>
           <label>
-            Project type
+            Phone Number
+            <input type="tel" placeholder="+91" />
+          </label>
+          <label>
+            Session Type
             <select defaultValue="Wedding">
               <option>Wedding</option>
+              <option>Pre-Wedding</option>
               <option>Portrait</option>
-              <option>Brand Photography</option>
               <option>Family Session</option>
             </select>
           </label>
           <label>
-            Message
-            <textarea rows="5" placeholder="Tell us about your vision" />
+            Event Date
+            <input type="date" />
           </label>
-          <button className="button button-primary" type="submit">Send inquiry</button>
+          <label>
+            Message
+            <textarea rows="5" placeholder="Share your vision, venue, and must-have moments" />
+          </label>
+          <button className="button button-primary" type="submit">Send Inquiry</button>
         </form>
 
         <aside className="contact-card">
-          <h2>Studio Details</h2>
+          <h2>Studio Information</h2>
           <p>📍 Ahmedabad, India</p>
           <p>📞 +91 99999 99999</p>
-          <p>✉️ hello@palistudio.com</p>
+          <p>✉️ hello@paliphotography.com</p>
           <p>
-            Available for destination weddings and editorial projects across India and abroad.
+            Available for destination weddings, editorial portraits, and intimate family stories.
           </p>
+          <hr />
+          <h3>Response Time</h3>
+          <p>We typically respond within 24 hours.</p>
         </aside>
       </section>
     </main>
